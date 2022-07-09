@@ -1,4 +1,4 @@
-import { CATEGORY_FAILURE, CATEGORY_REQUEST, CATEGORY_SUCCESS, FETCH_DATA_FAILURE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS } from "./actionTypes";
+import { ADD_PRODUCT_CART_FAILURE, ADD_PRODUCT_CART_REQUEST, ADD_PRODUCT_CART_SUCCESS, CATEGORY_FAILURE, CATEGORY_REQUEST, CATEGORY_SUCCESS, FETCH_DATA_FAILURE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, GET_SINGLE_PRODUCT_FAILURE, GET_SINGLE_PRODUCT_REQUEST, GET_SINGLE_PRODUCT_SUCCESS } from "./actionTypes";
 
 const initState = {
     products: [],
@@ -56,6 +56,47 @@ const reducer = (state = initState, action) => {
                 loading: false,
                 error: payload,
             }
+        
+        case GET_SINGLE_PRODUCT_REQUEST:
+            return {
+                ...state,
+                loading: true,
+            }
+        case GET_SINGLE_PRODUCT_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                currentProduct: payload,
+            }
+        case GET_SINGLE_PRODUCT_FAILURE:
+            return {
+                ...state,
+                loading: false,
+                error: payload,
+            }
+        
+        case ADD_PRODUCT_CART_REQUEST:
+            return {
+                ...state,
+                error: "",
+                loading: true
+            }
+        
+        case ADD_PRODUCT_CART_SUCCESS:
+            return {
+                ...state,
+                error: "",
+                loading: false,
+                cart: [...state.cart, payload]
+
+            }
+        case ADD_PRODUCT_CART_FAILURE:
+            return {
+                ...state,
+                error: payload,
+                loading: false
+            }
+ 
         
         
         default:

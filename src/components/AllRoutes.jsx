@@ -2,6 +2,7 @@ import React from 'react'
 
 import {Routes,Route} from 'react-router-dom'
 import Homepage from '../pages/Homepage'
+import Product from '../pages/Product'
 import Navbar from './Navbar'
 // import Cart from '../pages/Cart'
 // import {HomePage} from '../pages/HomePage'
@@ -18,7 +19,7 @@ const AllRoutes = () => {
       <Routes>
           <Route path='/' element = { <Homepage/>} />
           {/* <Route path='/products' element = { 'ProductPAge'}  /> */}
-          <Route path='/products/:id' element = {'SIngle'} />
+          <Route path='/products/:id' element = {<Product/>} />
         <Route path='/cart' element={ "Cart"} />
         <Route path='/orders' element={ "Orders"} />
         <Route path='/about' element={ "About"} />
