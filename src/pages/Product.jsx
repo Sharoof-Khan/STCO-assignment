@@ -12,7 +12,7 @@ import {
   StackDivider,
   Spinner
 } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 
 import { MdLocalShipping } from 'react-icons/md';
@@ -24,6 +24,14 @@ import { addProductCart, getSingleProduct } from '../redux/action';
 export default function Product() {
 
   // const params = useParams()
+    
+    let quantity = [1, 2, 3, 4, 5, 6,];
+    const [quantitySelect, setQuantitySelect] = useState(1);
+
+    const handleQuantity = (e) => {
+        setQuantitySelect(e.target.value)
+        // console.log(e.target.value);
+    }
   const {id} = useParams()
 //   console.log(id,'params');
   const dispatch = useDispatch()
@@ -41,14 +49,26 @@ export default function Product() {
   }, [dispatch, id])
   
 
-  const addToCartHandler = () => { 
+    const addToCartHandler = () => {
 
-    currentProduct && dispatch(addProductCart(currentProduct))
+        // currentProduct && dispatch(addProductCart({"curr": currentProduct, "quantity": quantitySelect}))
+    // currentProduct && dispatch(addProductCart(currentProduct))
+        // { currentProduct && currentProduct?.quantity = quantitySelect }
+        if(currentProduct) {
+            currentProduct.quantity = quantitySelect
+            console.log(currentProduct,'currentProductQuantity');
+            dispatch(addProductCart(currentProduct))
+        }
+
+
     }
 
 
     if (loading) {
-        return <Spinner
+        return (
+            <div style={{"minHeight":'82vh'}}>
+
+        <Spinner
             thickness='5px'
             speed='0.65s'
             emptyColor='gray.200'
@@ -56,16 +76,19 @@ export default function Product() {
             size='xl'
             mt={'40vh'}
             
-        />
+            
+            />
+            </div>
+        )
     } 
         
     
     
         return (
   
-            <>
+            <div >
 
-                <Container maxW={'7xl'}>
+                <Container maxW={'7xl'} >
                     <SimpleGrid
                         columns={{ base: 1, lg: 2 }}
                         spacing={{ base: 8, md: 10 }}
@@ -125,6 +148,17 @@ export default function Product() {
            
                             </Stack>
 
+                            <Box>
+                                <Text>Select Quantity</Text>
+                                <select value={quantitySelect} onChange={handleQuantity}>
+                                    {quantity.map((item, index) => {
+                                        return (
+                                            <option key={index} value={item}>{item}</option>
+                                        )
+                                    })}
+                                </select>
+                            </Box>
+
                             <Button
                                 rounded={'none'}
                                 w={'full'}
@@ -150,7 +184,7 @@ export default function Product() {
                     </SimpleGrid>
                 </Container>
       
-            </>
+            </div>
     
         );
     

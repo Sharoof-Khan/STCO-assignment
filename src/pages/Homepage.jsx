@@ -4,11 +4,11 @@ import Products from '../components/Products'
 
 const Homepage = () => {
     return (
-        <>
+        <div style={{'minHeight':'82vh'}}>
             <Products/>
             {/* <h1>Homepage</h1> */}
 
-        </>
+        </div>
   )
 }
 
