@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { ADD_PRODUCT_CART_FAILURE, ADD_PRODUCT_CART_REQUEST, ADD_PRODUCT_CART_SUCCESS, ADD_PRODUCT_ORDER_FAILURE, ADD_PRODUCT_ORDER_REQUEST, ADD_PRODUCT_ORDER_SUCCESS, CATEGORY_FAILURE, CATEGORY_REQUEST, CATEGORY_SUCCESS, EMPTY_CART_FAILURE, EMPTY_CART_REQUEST, EMPTY_CART_SUCCESS, FETCH_CART_FAILURE, FETCH_CART_REQUEST, FETCH_CART_SUCCESS, FETCH_DATA_FAILURE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, GET_SINGLE_PRODUCT_FAILURE, GET_SINGLE_PRODUCT_REQUEST, GET_SINGLE_PRODUCT_SUCCESS, REMOVE_FROM_CART_FAILURE, REMOVE_FROM_CART_REQUEST, REMOVE_FROM_CART_SUCCESS, REMOVE_PRODUCT_FROM_CART_FAILURE, REMOVE_PRODUCT_FROM_CART_REQUEST, REMOVE_PRODUCT_FROM_CART_SUCCESS } from "./actionTypes";
+import { ADD_PRODUCT_CART_FAILURE, ADD_PRODUCT_CART_REQUEST, ADD_PRODUCT_CART_SUCCESS, ADD_PRODUCT_ORDER_FAILURE, ADD_PRODUCT_ORDER_REQUEST, ADD_PRODUCT_ORDER_SUCCESS, CART_COUNTER_FAILURE, CART_COUNTER_REQUEST, CART_COUNTER_SUCCESS, CATEGORY_FAILURE, CATEGORY_REQUEST, CATEGORY_SUCCESS, EMPTY_CART_FAILURE, EMPTY_CART_REQUEST, EMPTY_CART_SUCCESS, FETCH_CART_FAILURE, FETCH_CART_REQUEST, FETCH_CART_SUCCESS, FETCH_DATA_FAILURE, FETCH_DATA_REQUEST, FETCH_DATA_SUCCESS, FETCH_ORDER_FAILURE, FETCH_ORDER_REQUEST, FETCH_ORDER_SUCCESS, GET_SINGLE_PRODUCT_FAILURE, GET_SINGLE_PRODUCT_REQUEST, GET_SINGLE_PRODUCT_SUCCESS,  REMOVE_PRODUCT_FROM_CART_FAILURE, REMOVE_PRODUCT_FROM_CART_REQUEST, REMOVE_PRODUCT_FROM_CART_SUCCESS, REMOVE_PRODUCT_FROM_ORDER_FAILURE, REMOVE_PRODUCT_FROM_ORDER_REQUEST, REMOVE_PRODUCT_FROM_ORDER_SUCCESS } from "./actionTypes";
 
 const fetchDataRequest = (payload) => {
     return {
@@ -147,10 +147,6 @@ const addProductCartFailure = (payload) => {
 
 export const addProductCart = (product) => dispatch => {
     
-    // Axios.post('/cart', product)
-    //     .then(res => dispatch(addProductCartSuccess(res.data)))
-    // .then(res => dispatch(addProductCartFailure(res.data)))
-    
     try {
         dispatch(addProductCartRequest())
         dispatch(addProductCartSuccess(product))
@@ -165,7 +161,7 @@ export const addProductCart = (product) => dispatch => {
     
 
 
-    console.log(product,'produt');
+    // console.log(product,'produt');
 
 }
 
@@ -205,8 +201,7 @@ export const fetchCart = (payload) => dispatch => {
         
         
     }
-    // Axios.get('/cart').then(res => dispatch(fetchCartSuccess(res.data)))
-    // .catch(e => dispatch(fetchCartFailure(e.data)))
+    
 }
 
 
@@ -223,7 +218,7 @@ const removeProductFromCartSuccess = (payload) => {
 
     return {
         type: REMOVE_PRODUCT_FROM_CART_SUCCESS,
-        payload
+        id:payload
     }
     
 }
@@ -235,44 +230,23 @@ const removeProductFromCartFailure = (payload) => {
     }
 }
 
-export const removeProductFromCart = (id) => dispatch => { 
-    dispatch(removeProductFromCartRequest())
-    Axios.delete(`/cart/${id}`)
-        .then(res => dispatch(removeProductFromCartSuccess(res.data)))
-        .then(()=> dispatch(fetchCart()))
-    .catch(e => dispatch(removeProductFromCartFailure(e.data)))
+export const removeProductFromCart = (payload) => dispatch => { 
+    
+    try {
+        dispatch(removeProductFromCartRequest())
+        dispatch(removeProductFromCartSuccess(payload))
+        // dispatch(fetchCart())
+        
+    } catch (error) {
+        dispatch(removeProductFromCartFailure(error))
+        
+        
+        
+    }
+
+
 }
 // *****************************************Remove Item From Cart AND SEND TO ORDER *************************************
-const removeFromCartRequest = (payload) => {
-    return {
-        type: REMOVE_FROM_CART_REQUEST,
-        payload
-    }
-}
-
-const removeFromCartSuccess = (payload) => {
-
-    return {
-        type: REMOVE_FROM_CART_SUCCESS,
-        payload
-    }
-    
-}
-
-const removeFromCartFailure = (payload) => {
-    return {
-        type: REMOVE_FROM_CART_FAILURE,
-        payload
-    }
-}
-
-export const removeFromCart = (id) => dispatch => { 
-    dispatch(removeFromCartRequest())
-    Axios.delete(`/cart/${id}`)
-        .then(res => dispatch(removeFromCartSuccess(res.data)))
-        .then(()=> dispatch(fetchCart()))
-    .catch(e => dispatch(removeFromCartFailure(e.data)))
-}
 
 
 
@@ -305,32 +279,22 @@ const addProductOrderFailure = (payload) => {
 
 
 export const addProductOrder = (payload) => dispatch => {
-    dispatch(addProductOrderRequest())
 
-    const orderPayload = [];
 
-    for (let product of payload) {
+    
+    
+    try {
+        dispatch(addProductOrderRequest())
+        dispatch(addProductOrderSuccess(payload))
         
-        product && orderPayload.push(Axios.post('/orders', product))
+    } catch (error) {
+        dispatch(addProductOrderFailure(error))
+        
+        
+        
     }
 
-    Promise.all(orderPayload)
-        .then(() => dispatch(addProductOrderSuccess()))
-        .then(() => dispatch(emptyCart(payload)))
-        // .then(() =>
-            
-        //     setTimeout(() => { 
-
-        //         alert('Your Order has been Successfully Placed')
-        //     }, 100)
-
-        
-    // )
-        .catch((e) => dispatch(addProductOrderFailure()))
-
-    // // Axios.post('/orders', product)
-    //     .then(res => dispatch(addProductOrderSuccess(res.data)))
-    // .then(res => dispatch(addProductOrderFailure(res.data)))
+    
 }
 
 
@@ -363,25 +327,116 @@ const emptyCartFailure = (payload) => {
 
 
 export const emptyCart = (payload) => dispatch => {
-    dispatch(emptyCartRequest())
-
-    const deleteOrders = [];
-
-    for (let item of payload) {
+    
+    try {
+        dispatch(emptyCartRequest())
+        dispatch(emptyCartSuccess())
+        // dispatch(fetchCart())
         
-        let temp = dispatch(removeFromCart(item.id))
         
-        deleteOrders.push(temp)
-        // product && orderPayload.push(Axios.delete('/cart', product))
+    } catch (error) {
+        dispatch(emptyCartFailure(error))
+        
+        
+        
+        
     }
 
-    Promise.all(deleteOrders)
-        .then(() => dispatch(emptyCartSuccess()))
-        .catch((e) => dispatch(emptyCartFailure()))
-
-    // // Axios.post('/orders', product)
-    //     .then(res => dispatch(addProductOrderSuccess(res.data)))
-    // .then(res => dispatch(addProductOrderFailure(res.data)))
+    
 }
+
+const fetchOrderRequest = (payload) => {
+    return {
+        type: FETCH_ORDER_REQUEST,
+        payload
+    }
+}
+
+const fetchOrderSuccess = (payload) => {
+
+    return {
+        type: FETCH_ORDER_SUCCESS,
+        payload
+    }
+    
+}
+
+const fetchOrderFailure = (payload) => {
+    return {
+        type: FETCH_ORDER_FAILURE,
+        payload
+    }
+}
+
+export const fetchOrders = (payload) => {
+
+    return (dispatch) => {
+        try {
+            dispatch(fetchOrderRequest())
+            dispatch(fetchOrderSuccess(payload))
+    
+        } catch (error) {
+            dispatch(fetchOrderFailure(error))
+    
+        }
+    
+            }
+
+           };
+
+
+
+
+// *****************************************Remove Order *************************************
+
+
+const removeFromOrderRequest = (payload) => {
+    return {
+        type: REMOVE_PRODUCT_FROM_ORDER_REQUEST,
+        payload
+    }
+}
+
+const removeFromOrderSuccess = (payload) => {
+
+    return {
+        type: REMOVE_PRODUCT_FROM_ORDER_SUCCESS,
+        payload
+    }
+    
+}
+
+const removeFromOrderFailure = (payload) => {
+    return {
+        type: REMOVE_PRODUCT_FROM_ORDER_FAILURE,
+        payload
+    }
+}
+
+export const removeFromOrder = (id) => dispatch => { 
+    
+    try {
+        dispatch(removeFromOrderRequest())
+        dispatch(removeFromOrderSuccess(id))
+        
+    } catch (error) {
+        dispatch(removeFromOrderFailure(error))
+        
+        
+        
+        
+    }
+
+    // Axios.delete(`/orders/${id}`)
+    //     .then(res => dispatch(removeFromOrderSuccess(res.data)))
+    //     .then(()=> dispatch(fetchOrders()))
+    // .catch(e => dispatch(removeFromOrderFailure(e.data)))
+}
+
+
+
+
+
+
 
 

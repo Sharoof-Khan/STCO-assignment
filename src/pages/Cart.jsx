@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Button, Heading, Image, Stack, Text, useColorModeValue } from '@chakra-ui/react'
 
 import{DeleteIcon} from '@chakra-ui/icons'
@@ -10,25 +10,47 @@ import { Checkout } from '../components/Checkout'
 import Marquee from "react-fast-marquee";
 
 import { useNavigate } from 'react-router-dom'
+// import { getCartCount } from '../redux/reducer'
+// import {cartCounter} from '../redux/action'
+
 
 
 
 const Cart = () => {
-    const cart = useSelector(store => store.ecommerceData.cart)
 
-    // let quan = {cart.map(item => item.quantity)}
-//   let q1 =  {cart.map(item => item.quantity)}
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
     
-    // const [qua,setQua] = useState({cart.map(item => item.quantity)})
-    // console.log(cart,'cartStore');
     
+    const cart = useSelector(store => store.ecommerceData.cart)
+    console.log(cart,'cartStore');
+    
+    
+    useEffect(() => {     
+      // dispatch(removeFromCart())
+        let items = 0;
+        let price = 0;
+       cart?.length >= 1 && cart.map(item => {
+            items += item.quantity;
+            price += item.price * item.quantity;
+        })
+        
+        setTotalPrice(price);
+        setTotalItems(items);
+    }, [cart, totalPrice,totalItems,setTotalItems,setTotalPrice])
   const dispatch = useDispatch()
 
   const nevigate = useNavigate()
   // console.log(cart, 'cart');
 
   const removeProduct = (id) => { 
-    console.log("Going to remove product from Cart",id);
+      console.log("Going to remove product from Cart", id);
+
+    //   const newCart = cart.filter(item => item.id !== id);
+    //   console.log('newCart:', newCart)
+
+      
+
     dispatch(removeProductFromCart(id))
     
   }
@@ -37,18 +59,23 @@ const Cart = () => {
     console.log("Going to checkout");
     dispatch(addProductOrder(cart))
 
-    setTimeout(() => { 
+      setTimeout(() => { 
+        
+          alert('Order Placed Successfully')
 
-      nevigate('/products')
+      nevigate('/')
       
     }, 1000);
-
-
-  
-  }
+      
+      
+    
+    
+    
+}
     return (
     //   <h1>Cart</h1>
-    <Box>
+        <Box>
+            
       
       <Heading as={'h2'} size='xl' textAlign={'center'}>
         Cart
@@ -72,20 +99,22 @@ const Cart = () => {
             key={item.id}
             image={item.image}
             title={item.title}
-            price={Math.round(item.price*item.quantity)}
+            quantity = {item.quantity}
+            price={Math.ceil(item.price)}
             description={item.description}
-                removeProduct={removeProduct}
-                quantity = {item.quantity}
+            removeProduct={removeProduct}
+                // totalPrise={totalPrice}
             />
             
           })
         }
         {/* </FlipMove> */}
         </Box> 
-      {cart?.length >= 1 && <Subtotal />}
+      {cart?.length >= 1 && <Subtotal totalPrice = {totalPrice} />}
+            {/* {cart?.length >= 1 &&  <h1>{totalPrice } Total</h1>} */}
       
               {/* handleCheckout = {handleCheckout} */}
-      {cart?.length >= 1 && <Checkout cart={cart } handleCheckout = {handleCheckout}  />} 
+      {cart?.length >= 1 && <Checkout totalPrice = {totalPrice} cart={cart }  handleCheckout = {handleCheckout}  />} 
       
 
     </Box >
@@ -96,14 +125,22 @@ const Cart = () => {
 //  const image =
 //   'https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80';
 
-function CartItem({ title, image, description, price, removeProduct, id, quantity }) {
+function CartItem({ title, image, description, price, removeProduct, id, quantity, }) {
     
     // console.log(quantity, 'quantityCheck');
+    // import { getCartCount } from '../redux/reducer';
     const [count, setCount] = useState(quantity);
-    console.log(count,'cjek');
+    const cart = useSelector(store => store.ecommerceData.cart)
+    const dispatch = useDispatch()
+
+
+    // console.log(count,'cjek');
 
     const handleInc = () => {
-        setCount(  Number(count) + 1)
+        setCount(Number(count) + 1)
+        //  getCartCount(cart+1)
+        // dispatch(cartCounter(1))
+        
         // dispatch(addProductOrder(id, ttl))
     }
 
@@ -111,6 +148,9 @@ function CartItem({ title, image, description, price, removeProduct, id, quantit
 
         
         setCount(count - 1)
+        // dispatch(cartCounter(-1))
+        //  (getCartCount(cart) -1)
+
     }
 
 

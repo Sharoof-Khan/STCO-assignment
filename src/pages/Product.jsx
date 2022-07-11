@@ -17,7 +17,7 @@ import { BsStar, BsStarFill, BsStarHalf } from 'react-icons/bs';
 
 import { MdLocalShipping } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom'
+import { useParams,useNavigate } from 'react-router-dom'
 
 import { addProductCart, getSingleProduct } from '../redux/action';
 
@@ -37,9 +37,12 @@ export default function Product() {
   const dispatch = useDispatch()
 
   const currentProduct = useSelector(store => store.ecommerceData.currentProduct)
+  const cart = useSelector(store => store.ecommerceData.cart)
   // console.log(currentProduct,'product');
   const loading = useSelector(store => store.ecommerceData.loading)
   // console.log('loadding:', loadding)
+    
+    const navigate = useNavigate()
 
   useEffect(() => {
     if (id) {
@@ -54,10 +57,17 @@ export default function Product() {
         // currentProduct && dispatch(addProductCart({"curr": currentProduct, "quantity": quantitySelect}))
     // currentProduct && dispatch(addProductCart(currentProduct))
         // { currentProduct && currentProduct?.quantity = quantitySelect }
-        if(currentProduct) {
-            currentProduct.quantity = quantitySelect
-            console.log(currentProduct,'currentProductQuantity');
-            dispatch(addProductCart(currentProduct))
+        if (currentProduct) {
+            
+            if (cart.every(item => item.id !== currentProduct.id)) { 
+                currentProduct.quantity = quantitySelect
+                console.log(currentProduct,'currentProductQuantity');
+                dispatch(addProductCart(currentProduct))
+                
+            }else{
+                alert('Product already in cart')
+                navigate('/cart')
+            }
         }
 
 
@@ -116,7 +126,7 @@ export default function Product() {
                                     color={'gray'}
                                     fontWeight={300}
                                     fontSize={'2xl'}>
-                                    ₹ {currentProduct.price}
+                                    ${Math.round(currentProduct.price)}
                                 </Text>
                             </Box>
                             <Box >

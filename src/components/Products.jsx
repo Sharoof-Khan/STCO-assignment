@@ -60,9 +60,9 @@ const Products = (id) => {
                   <Flex flexWrap="wrap" justifyContent='space-around'>
                       {products.map((product) => {
                         return (
-                          <Link key={product.id} to={`/products/${product.id}`} target="_blank" >   {/*target="_blank" */}
+                          <Link key={product.id} to={`/products/${product.id}`}  >   {/*target="_blank" */}
 
-                            < ProductSimple key={product.id} id = {product.id} image={product.image} title={product.title} price={product.price} />
+                            < ProductSimple key={product.id} id = {product.id} image={product.image} title={product.title} price={Math.round(product.price)} />
                             
                           </Link>
                         )

@@ -6,10 +6,10 @@ import { useSelector } from 'react-redux';
 import {getCartTotal} from '../redux/reducer'
 
 
-const Subtotal = () => {
+const Subtotal = ({totalPrice}) => {
 
-    const cartStorage = useSelector(state => state.ecommerceData.cart)
-    const cartItems = cartStorage.curr
+    const cartItems = useSelector(state => state.ecommerceData.cart)
+    // const cartItems = cartStorage.curr
 
 
     
@@ -31,10 +31,11 @@ const Subtotal = () => {
                   </>
               )}
               decimalScale={2}
-              value={getCartTotal(cartItems)}
+            //   value={getCartTotal(cartItems)}
+              value={Math.ceil(totalPrice)}
               displayType={'text'}
               thousandSeparator={true}
-              prefix = {" ₹ "}
+              prefix = {" $ "}
           />
 
           {/* <button>Proceed to Checkout</button> */}

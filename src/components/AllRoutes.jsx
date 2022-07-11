@@ -4,6 +4,7 @@ import {Routes,Route} from 'react-router-dom'
 import AboutPage from '../pages/About'
 import Cart from '../pages/Cart'
 import Homepage from '../pages/Homepage'
+import Order from '../pages/Orders'
 import Product from '../pages/Product'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -24,7 +25,7 @@ const AllRoutes = () => {
           {/* <Route path='/products' element = { 'ProductPAge'}  /> */}
           <Route path='/products/:id' element = {<Product/>} />
         <Route path='/cart' element={ <Cart/>} />
-        <Route path='/orders' element={ "Orders"} />
+        <Route path='/orders' element={ <Order/>} />
         <Route path='/about' element={ <AboutPage/>} />
           </Routes>
           <Footer/>

@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
 import Subtotal from './SubTotal'
-export const Checkout = ({ cart, handleCheckout }) => {
+export const Checkout = ({ cart, handleCheckout,totalPrice  }) => {
     // const nevigate = useNavigate()
 
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -65,7 +65,7 @@ export const Checkout = ({ cart, handleCheckout }) => {
                                       </Box>
                                       <Box   margin='auto'>
                                           <Text overflow='hidden' textOverflow={'ellipsis'} width='200px' whiteSpace={'nowrap'}>{item.title}</Text>
-                                          <Text textAlign={'center'}>₹ { item.price}</Text>
+                                          <Text textAlign={'center'}>${Math.round(item.price * item.quantity)},  Quantity : { item.quantity}</Text>
                                           
                                       </Box>
                                       
@@ -74,7 +74,7 @@ export const Checkout = ({ cart, handleCheckout }) => {
                           )
                           
                       })}
-                          <Subtotal/>
+                          <Subtotal totalPrice={totalPrice} />
                         </Box>
                       
           </ModalBody>
