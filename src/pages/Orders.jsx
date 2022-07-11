@@ -13,71 +13,68 @@ import { Spinner } from '@chakra-ui/react'
 
 
 const Order = () => {
-  const order = useSelector(store => store.ecommerceData.orders)
-  const loading = useSelector(store => store.ecommerceData.loading)
-  // console.log(loading,'load');
-  const dispatch = useDispatch()
-//   console.log(order, 'order');
+    const order = useSelector(store => store.ecommerceData.orders)
+    console.log(order, 'orderCheck');
+    const loading = useSelector(store => store.ecommerceData.loading)
+    // console.log(loading,'load');
+    const dispatch = useDispatch()
+    //   console.log(order, 'order');
 
   
-  useEffect(() => {
+    useEffect(() => {
 
-      dispatch(fetchOrders())
+        dispatch(fetchOrders())
     
     
-  }, [dispatch])
+    }, [dispatch])
 
-  console.log(order, 'orderAter');
-  const cancelOrder = (id) => { 
-    console.log("Going to remove product from Order",id);
-    dispatch(removeFromOrder(id))
+    const cancelOrder = (id) => {
+        console.log("Going to remove product from Order", id);
+        dispatch(removeFromOrder(id))
     
-  }
-  
-  return (
-    <Box>
-      <Heading as={'h2'} size='xl' textAlign={'center'}>
-       Your Order
-      </Heading>
-
-      {!order.length && !loading &&
-        <Marquee speed={'80'} >
+    }
+    
+    // { !order && loading && <Spinner /> }
+    if (!order && loading) {
         
-        <Text fontSize={'3xl'} color='red' fontStyle={'italic'} fontWeight='bold' > No Order !!!, Continue Shopping... </Text>
-        </Marquee>
-      }
+        return <Spinner />
+    } else {
+        
+    
 
-      {/* { loading && order.length && <Box>
+  
+    return (
+        <Box>
+            <Heading as={'h2'} size='xl' textAlign={'center'}>
+                Your Order
+            </Heading>
+
+            {!order.length && !loading &&
+                <Marquee speed={'80'} >
+        
+                    <Text fontSize={'3xl'} color='red' fontStyle={'italic'} fontWeight='bold' > No Order !!!, Continue Shopping... </Text>
+                </Marquee>
+            }
+
+            {/* { loading && order.length && <Box>
         <Spinner />
       </Box>
       } */}
-      <Box minHeight={'75vh'}>
-        {!order && loading && <Spinner />}
+            <Box minHeight={'75vh'}>
         
+                {order?.length >=1 && order[0].map(item => {
+                  return <CartItem key={nanoid()} title={item.title} image={item.image} description={item.description} price={item.price} cancelOrder={cancelOrder} id={item.id}/>
+               })}
+              
+              
         
-        {
-
-          order && order.map(item => {
-            
-            return <CartItem
-              key={nanoid(3)}
-            // id = {nanoid(3)}
-            id = {item.id}
-            image={item.image}
-            title={item.title}
-            price={item.price}
-            description={item.description}
-              cancelOrder={cancelOrder}
-            />
-            
-          })
-        }
-        </Box> 
+            </Box>
       
 
-    </Box >
+        </Box >
     
-  )
+    )
+}
 }
 
 

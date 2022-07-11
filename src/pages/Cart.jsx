@@ -23,7 +23,7 @@ const Cart = () => {
     
     
     const cart = useSelector(store => store.ecommerceData.cart)
-    console.log(cart,'cartStore');
+    // console.log(cart,'cartStore');
     
     
     useEffect(() => {     
@@ -46,17 +46,12 @@ const Cart = () => {
   const removeProduct = (id) => { 
       console.log("Going to remove product from Cart", id);
 
-    //   const newCart = cart.filter(item => item.id !== id);
-    //   console.log('newCart:', newCart)
-
-      
-
     dispatch(removeProductFromCart(id))
     
   }
   const handleCheckout = () => {
 
-    console.log("Going to checkout");
+    // console.log("Going to checkout");
     dispatch(addProductOrder(cart))
 
       setTimeout(() => { 
@@ -138,18 +133,14 @@ function CartItem({ title, image, description, price, removeProduct, id, quantit
 
     const handleInc = () => {
         setCount(Number(count) + 1)
-        //  getCartCount(cart+1)
-        // dispatch(cartCounter(1))
-        
-        // dispatch(addProductOrder(id, ttl))
+      
     }
 
     const handleDec = (e) => {
 
         
         setCount(count - 1)
-        // dispatch(cartCounter(-1))
-        //  (getCartCount(cart) -1)
+   
 
     }
 
@@ -203,9 +194,9 @@ function CartItem({ title, image, description, price, removeProduct, id, quantit
                       
                       <Box>
                           <Text fontSize={'lg'}>Quantity: {count}</Text>
-                          <Button onClick={handleInc}  style= {{marginRight:'10px'}}> +1</Button>
+                          {/* <Button onClick={handleInc}  style= {{marginRight:'10px'}}> +1</Button> */}
                           
-                          {count >1 ? <Button onClick={handleDec} > -1</Button>: <Button disabled> -1</Button>}
+                          {/* {count >1 ? <Button onClick={handleDec} > -1</Button>: <Button disabled> -1</Button>} */}
             </Box>
 
             <Button  variant={'outline'} leftIcon = {<DeleteIcon/>} onClick={()=>removeProduct(id)}>Remove </Button>

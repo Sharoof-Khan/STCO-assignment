@@ -129,7 +129,7 @@ const MobileNav = () => {
       bg={useColorModeValue('white', 'gray.800')}
       p={4}
       display={{ md: 'none' }}>
-      <Link as={RouterLink} to='/products'>
+      <Link as={RouterLink} to='/about'>
       <Text mr={'80%'}>About</Text>
       </Link>
     </Stack>

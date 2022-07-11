@@ -65,7 +65,7 @@ export const Checkout = ({ cart, handleCheckout,totalPrice  }) => {
                                       </Box>
                                       <Box   margin='auto'>
                                           <Text overflow='hidden' textOverflow={'ellipsis'} width='200px' whiteSpace={'nowrap'}>{item.title}</Text>
-                                          <Text textAlign={'center'}>${Math.round(item.price * item.quantity)},  Quantity : { item.quantity}</Text>
+                                          <Text textAlign={'center'}>${Math.ceil(item.price * item.quantity)},  Quantity : { item.quantity}</Text>
                                           
                                       </Box>
                                       

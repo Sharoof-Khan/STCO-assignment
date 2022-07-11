@@ -54,15 +54,14 @@ export default function Product() {
 
     const addToCartHandler = () => {
 
-        // currentProduct && dispatch(addProductCart({"curr": currentProduct, "quantity": quantitySelect}))
-    // currentProduct && dispatch(addProductCart(currentProduct))
-        // { currentProduct && currentProduct?.quantity = quantitySelect }
         if (currentProduct) {
             
             if (cart.every(item => item.id !== currentProduct.id)) { 
                 currentProduct.quantity = quantitySelect
-                console.log(currentProduct,'currentProductQuantity');
+                // console.log(currentProduct,'currentProductQuantity');
                 dispatch(addProductCart(currentProduct))
+                alert('Product Added to Cart');
+                navigate('/cart')
                 
             }else{
                 alert('Product already in cart')
