@@ -14,7 +14,7 @@ import { Spinner } from '@chakra-ui/react'
 
 const Order = () => {
     const order = useSelector(store => store.ecommerceData.orders)
-    console.log(order, 'orderCheck');
+    // console.log(order, 'orderCheck');
     const loading = useSelector(store => store.ecommerceData.loading)
     // console.log(loading,'load');
     const dispatch = useDispatch()
